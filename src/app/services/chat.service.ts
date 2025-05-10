@@ -15,7 +15,7 @@ export class ChatService {
   // Using signals for reactive state management
   private messagesSignal = signal<any[]>([
     {
-      text: "Hello! I'm your Enterprise Assistant. How can I help you today?",
+      text: "Hello! I'm your Chatbot Assistant. How can I help you today?",
       isUser: false,
       timestamp: new Date()
     }

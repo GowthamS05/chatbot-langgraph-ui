@@ -1,88 +1,85 @@
 
 <div class="bg-white rounded-lg shadow h-full flex flex-col" style="height: calc(100vh - 150px);">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-medium">Enterprise Assistant</h2>
-      <p class="text-sm text-gray-500 mt-1">Get real-time help with your queries</p>
-    </div>
-    
-    <!-- Chat Messages Area -->
-    <div #chatMessagesContainer class="flex-1 p-4 overflow-y-auto space-y-4">
-      <!-- Regular Messages -->
-      <ng-container *ngFor="let message of chatService.messages()">
-        <div class="flex items-start" [ngClass]="{'justify-end': message.isUser}">
-          <!-- Bot Avatar (left side) -->
-          <div class="flex-shrink-0" *ngIf="!message.isUser">
-            <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" clip-rule="evenodd" />
-              </svg>
-            </div>
-          </div>
-          
-          <!-- Message content -->
-          <div [ngClass]="message.isUser ? 'mr-3 bg-blue-600 text-white' : 'ml-3 bg-blue-50 text-gray-900'" class="rounded-lg py-2 px-3 max-w-3/4">
-            <div class="text-sm whitespace-pre-wrap markdown-content">
-              {{ message.text }}
-            </div>
-          </div>
-          
-          <!-- User Avatar (right side) -->
-          <div class="flex-shrink-0" *ngIf="message.isUser">
-            <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-medium">
-              JS
-            </div>
-          </div>
-        </div>
-      </ng-container>
-      
-      <!-- Streaming Message (only show when actively streaming) -->
-      <div class="flex items-start" *ngIf="chatService.isStreaming()">
-        <div class="flex-shrink-0">
+  <div class="px-6 py-4 border-b border-gray-200">
+    <h2 class="text-lg font-medium">Chatbot Assistant</h2>
+    <p class="text-sm text-gray-500 mt-1">Get real-time help with your queries</p>
+  </div>
+  
+  <!-- Chat Messages Area -->
+  <div #chatMessagesContainer class="flex-1 p-4 overflow-y-auto space-y-4">
+    <!-- Regular Messages -->
+    <ng-container *ngFor="let message of chatService.messages()">
+      <div class="flex items-start" [ngClass]="{'justify-end': message.isUser}">
+        <!-- Bot Avatar (left side) -->
+        <div class="flex-shrink-0" *ngIf="!message.isUser">
           <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" clip-rule="evenodd" />
             </svg>
           </div>
         </div>
-        <div class="ml-3 bg-blue-50 rounded-lg py-2 px-3 max-w-3/4">
-          <div class="text-sm text-gray-900 whitespace-pre-wrap markdown-content">
-            @if (chatService.streamingContent()){
-                {{ chatService.streamingContent() }}
-            }
-            @else {
-                <div class="ml-3 bg-blue-50 rounded-lg py-2 px-3">
-                    <div class="text-sm text-gray-900 typing-indicator">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-            }
-            <!-- <markdown [data]=chatService.streamingContent() || typingIndicator></markdown> -->
+        
+        <!-- Message content -->
+        <div [ngClass]="message.isUser ? 'mr-3 bg-blue-600 text-white' : 'ml-3 bg-blue-50 text-gray-900'" class="rounded-lg py-2 px-3 max-w-3/4">
+            <div class="text-sm  markdown-content">
+                <markdown [data]="message.text"></markdown>
+          </div>
+      
+        </div>
+        
+        <!-- User Avatar (right side) -->
+        <div class="flex-shrink-0" *ngIf="message.isUser">
+          <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-medium">
+            GS
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
     
-    <!-- Chat Input Area -->
-    <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
-      <div class="flex items-center">
-        <input 
-          [(ngModel)]="currentMessage"
-          (keyup.enter)="sendMessage()"
-          [disabled]="chatService.isStreaming()"
-          type="text" 
-          class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-4" 
-          placeholder="Type your message...">
-        <button 
-          (click)="sendMessage()"
-          [disabled]="chatService.isStreaming()"
-          [ngClass]="{'opacity-50 cursor-not-allowed': chatService.isStreaming(), 'hover:bg-blue-700': !chatService.isStreaming()}"
-          class="ml-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+    <!-- Streaming Message (only show when actively streaming) -->
+    <div class="flex items-start" *ngIf="chatService.isStreaming()">
+      <div class="flex-shrink-0">
+        <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" clip-rule="evenodd" />
           </svg>
-        </button>
+        </div>
+      </div>
+      <div class="ml-3 bg-blue-50 rounded-lg py-2 px-3 max-w-3/4">
+        <div class="text-sm text-gray-900 markdown-content">
+          @if (chatService.streamingContent()) {
+            <markdown [data]="chatService.streamingContent()"></markdown>
+          } @else {
+            <div class="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          }
+        </div>
       </div>
     </div>
   </div>
+  
+  <!-- Chat Input Area -->
+  <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
+    <div class="flex items-center">
+      <input 
+        [(ngModel)]="currentMessage"
+        (keyup.enter)="sendMessage()"
+        [disabled]="chatService.isStreaming()"
+        type="text" 
+        class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-4" 
+        placeholder="Type your message...">
+      <button 
+        (click)="sendMessage()"
+        [disabled]="chatService.isStreaming()"
+        [ngClass]="{'opacity-50 cursor-not-allowed': chatService.isStreaming(), 'hover:bg-blue-700': !chatService.isStreaming()}"
+        class="ml-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

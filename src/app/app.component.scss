@@ -1,0 +1,13 @@
+@media (max-width: 768px) {
+    .dashboard-container {
+      flex-direction: column;
+    }
+    
+    .table-section, .chat-section {
+      width: 100%;
+    }
+    
+    .chat-section {
+      margin-bottom: 20px;
+    }
+  }

@@ -61,7 +61,7 @@ export class ChatService {
     
     // In a real app, userQuery would be sent to the backend
     // Here we're assuming the backend API endpoint
-    let url = `http://127.0.0.1:8000/stream/${encodeURIComponent(userQuery)}`;
+    let url = `https://saleschatbot-latest.onrender.com/stream/${encodeURIComponent(userQuery)}`;
 
     if(this.checkpoint_id()){
         url = `${url}?checkpoint_id=${this.checkpoint_id()}`
